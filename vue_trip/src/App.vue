@@ -7,7 +7,7 @@ import TabBar from './components/tabbar/TabBar.vue';
 
 <template>
     <div>
-        <h1>app</h1>
+        
         <!-- 占位 -->
         <RouterView></RouterView>
 
