@@ -1,6 +1,8 @@
 
 <script setup>
-import TabBar from './components/tabbar/TabBar.vue';
+// import TabBar from './components/tabbar/Tabbar.vue';
+import TabBar from './components/tabbar/VantTabBar.vue';
+
 
      
 </script>
