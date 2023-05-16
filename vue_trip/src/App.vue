@@ -2,6 +2,8 @@
 <script setup>
 // import TabBar from './components/tabbar/Tabbar.vue';
 import TabBar from './components/tabbar/VantTabBar.vue';
+import Background from './components/background/Background.vue'
+import Search from './components/search/Search.vue'
 
 
      
@@ -9,7 +11,7 @@ import TabBar from './components/tabbar/VantTabBar.vue';
 
 <template>
     <div>
-        
+
         <!-- 占位 -->
         <RouterView></RouterView>
 

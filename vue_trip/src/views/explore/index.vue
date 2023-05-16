@@ -1,11 +1,13 @@
 <script setup>
-
+import BackgroundAndSearch from './children/BackgroundAndSearch.vue'
      
 </script>
 
 <template>
     <div>
-        <h2>explore</h2>
+        
+        <BackgroundAndSearch></BackgroundAndSearch>
+        
     </div>
 </template>
 

@@ -2,4 +2,7 @@
 :root {
     --primary-color:#717171;
     --secondary-color:#e10c44;
+
+    --primary-radius:12px;
+    --secondary-radius:8px;
 }
