@@ -63,18 +63,17 @@ import { useRouter } from 'vue-router';
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            padding: 5px;
+            padding: 3px 5px;
             border-bottom: 1px solid #ccc;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
 
             .city {
                 width: 100px;
                 padding: 2px 10px;
-                margin-block: 5px;
+                margin-block: 2px;
                 margin-right: 2px;
                 border-right: 1px solid #ccc;
                 font-size: 16px;
-                background-color: pink;
             }
 
             .position {

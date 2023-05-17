@@ -2,7 +2,28 @@
 :root {
     --primary-color:#717171;
     --secondary-color:#e10c44;
+    --third-color:#484848;
+    --fourth-color:#222;
 
     --primary-radius:12px;
     --secondary-radius:8px;
+
+    /* 全局修改vant */
+    /* 退出箭头颜色 */
+    --van-blue:var(--fourth-color);
+
 }
+
+
+/* 对tabbar进行隐藏的操作 */
+.top-page {
+    position: relative;
+    z-index: 9;
+    height: 100vh;
+    background-color: #fff;
+
+    /* 这里是关键，不随着页面滚动，只在内部滚动 */
+    overflow-y: auto;
+}
+
+
