@@ -1,6 +1,6 @@
 <script setup>
 
-     // 顶部选择目的地
+// 顶部选择目的地
 const onClickLeft = () => {history.back()}
 
 </script>

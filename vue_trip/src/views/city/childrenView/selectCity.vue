@@ -32,11 +32,11 @@ const city = computed(() => {
 const router = useRouter()
 const cityStore = useCityStore()
 const cityClick = (city) => {
+    // 点击选择的城市，将数据保存到 store 中
+    cityStore.currentCity = city
 
     // 返回上一级----全局事件总线
     // 方法二
-    cityStore.currentCity = city
-
     router.back()
 }
 

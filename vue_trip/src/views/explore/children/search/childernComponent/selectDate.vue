@@ -1,6 +1,8 @@
 <script setup>
 import { format_mount_day,getDiffDays } from '@/utils/format_date';
 import { ref } from 'vue';
+import { useSearchParamsStore } from '@/store/modules/explore'
+
 
 // 格式化时间
 const nowDate = new Date()
@@ -10,11 +12,20 @@ future.setDate(nowDate.getDate() +1)
 const startDate = ref(format_mount_day(nowDate))
 const endDate = ref(format_mount_day(future))
 
+// 将需要传递的起止日期 实例化 出来----在onConfirm 中将数据传递
+const searchParamsStore = useSearchParamsStore()
+
+// 默认是选择一天(没有选择时间时)
+searchParamsStore.startDate = nowDate
+searchParamsStore.endDate = future
+
+
 // 计算总天数
 const countDate = ref(getDiffDays(nowDate,future))
 
 // 这里是判断是否显示的，默认不显示日历，这里取值的时候要.value
 const showCalendar = ref(false);
+
 
 // 显示日历-vant
 const onConfirm = (values) => {
@@ -29,6 +40,13 @@ const onConfirm = (values) => {
     // 这里也需要绑定,计算总天数
     countDate.value = getDiffDays(selectStartDate,selectEndDate)
 
+    // 1. 这里将选择好的日期传递给citystore 进行搜索的时候需要这个数据
+    // 2. 这里的数据可以通过 子传父 的方式让父组件获取数据
+    // 3. 当 button 按钮也要抽取组件的时候，第一种方式更加友好，第二种方式的话，就要进行 全局的通信 了
+    searchParamsStore.startDate = selectStartDate
+    searchParamsStore.endDate = selectEndDate
+
+
     // 这里需要.value
     showCalendar.value = false
 };
@@ -38,8 +56,10 @@ const selectCount = ref(false);
 const dialogCount = () => {
     selectCount.value = true
 }
-
+// 初始化 默认人数为0
 const peopleCount = ref(0);
+
+// TODO--这里需要把人数传递给cit
 
 
 </script>

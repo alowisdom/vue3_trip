@@ -23,6 +23,13 @@ const routes = [
     {
         path:'/city',
         component:() => import('../views/city/index.vue')
+    },
+    {
+        path:'/search',
+        component:() => import('../views/search/index.vue'),
+        meta:{
+            hideTabBar:true
+        }
     }
 ]
 

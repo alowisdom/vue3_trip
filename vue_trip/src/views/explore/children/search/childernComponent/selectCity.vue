@@ -9,6 +9,7 @@ const clickCity = () => {
 }
 
 // 获取城市--这里不应该在小组加中获取地址的数据
+// 这里只负责获取数据进行展示
 // const cityStore = useCityStore()
 // const {currentCity} = storeToRefs(cityStore)
 

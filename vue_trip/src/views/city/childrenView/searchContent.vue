@@ -2,7 +2,7 @@
 import { showToast } from 'vant';
 import { ref } from 'vue';
 
-     // 搜索框
+// 搜索框
 const searchValue = ref('')
 const onSearch = (val) => showToast(val)
 </script>
