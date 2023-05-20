@@ -12,3 +12,12 @@ export const getCategoriesData = () => {
         url:'/home/categories'
     })
 }
+
+export const getHouseListData = (pagesize) => {
+    return request.get({
+        url:'/home/houselist',
+        params:{
+            page:pagesize
+        }
+    })
+}

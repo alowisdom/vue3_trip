@@ -1,4 +1,4 @@
-import { getHotSuggestsData,getCategoriesData } from "@/service/modules/explore";
+import { getHotSuggestsData,getCategoriesData,getHouseListData } from "@/service/modules/explore";
 import { defineStore } from "pinia";
 
 // 获取热门城市数据
@@ -54,5 +54,29 @@ const useCategoriesStore = defineStore('categories',{
 
 })
 
+// 获取houselist数据
+const useHouseListStore = defineStore('houselist',{
+    state:() => ({
+        houselist:[],
+        currentIndex:1
+    }),
+    actions:{
+        async fetchHouseListAction(){
+            const res = await getHouseListData(this.currentIndex)
+            // 分页请求数据，要追加，而不是替换
+            // push 到末尾，要...追加
+            // this.houselist = res.data
+            // 而且要保证每一次请求的数据都不一样   
+            this.houselist.push(...res.data)
+            // 在这里管理页码
+            this.currentIndex++
+        }
+    }
+})
 
-export { useHotSuggestsStore, useSearchParamsStore,useCategoriesStore}
+
+export { useHotSuggestsStore, 
+        useSearchParamsStore,
+        useCategoriesStore,
+        useHouseListStore
+}

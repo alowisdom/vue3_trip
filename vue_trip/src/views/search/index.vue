@@ -3,7 +3,6 @@ import { useRouter } from 'vue-router';
 import { format_mount_day } from '@/utils/format_date';
 import { useCityStore } from '@/store/modules/city';
 import { storeToRefs } from 'pinia';
-import router from '@/router';
 
 const route = useRouter()
 
@@ -24,21 +23,21 @@ function clickBack() {
 <template>
     <div>
 
-        <h2>search page</h2>
+        <h1 style="text-align: center;">search page</h1>
         <!-- 未格式化时间 -->
-        <h2>开始时间：{{ $route.query.startDate }}</h2>
-        <h2>结束时间：{{ $route.query.endDate }}</h2>
+        <h3>开始时间：{{ $route.query.startDate }}</h3>
+        <h3>结束时间：{{ $route.query.endDate }}</h3>
         <!-- 已格式化时间 -->
-        <h2>开始时间：{{ format_mount_day(startDate) }}</h2>
-        <h2>结束时间：{{ format_mount_day(endDate) }}</h2>
+        <h3>开始时间：{{ format_mount_day(startDate) }}</h3>
+        <h3>结束时间：{{ format_mount_day(endDate) }}</h3>
 
         <!-- 人数 -->
-        <h2>总人数： TODO... </h2>
+        <h3>总人数： TODO... </h3>
 
         <!-- 城市 -->
-        <h2>城市：{{ $route.query.currentCity }}</h2>
+        <h3>城市：{{ $route.query.currentCity }}</h3>
         <!--  -->
-        <h2>store 获取城市：{{ currentCity.cityName }}</h2>
+        <h3>store 获取城市：{{ currentCity.cityName }}</h3>
 
         <div class="btn-box">
             <button @click="clickBack" class="btn">返回</button>
