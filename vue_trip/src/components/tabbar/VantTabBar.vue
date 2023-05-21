@@ -2,13 +2,24 @@
 import { getAssetURL } from '@/utils/load_assets.js'
 import tarbarData from '@/assets/data/tarbar'
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { watch } from 'vue';
 
+const route = useRoute()
 const currentIndex = ref(0)
+
+// 监听路由的改变
+watch(route,(newRoute) => {
+    const index = tarbarData.findIndex(item => item.path === newRoute.path)
+    // 没有找到时，隐藏
+    if(index === -1) return
+    currentIndex.value =index
+})
 
 </script>
 
 <template>
-    <van-tabbar v-model="currentIndex" active-color="#e10c44" class="van-tabbar">
+    <van-tabbar v-model="currentIndex" active-color="#e10c44" class="van-tabbar" route>
         <template v-for="(item, index) in tarbarData" :key="item.name">
             <van-tabbar-item :to="item.path">
                 <span>{{ item.name }}</span>

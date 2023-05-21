@@ -1,27 +1,31 @@
 <script setup>
 import { format_mount_day,getDiffDays } from '@/utils/format_date';
 import { ref } from 'vue';
-import { useSearchParamsStore } from '@/store/modules/explore'
+import { useSearchParamsStore } from '@/store/modules/main'
+import { storeToRefs } from 'pinia';
+import { computed } from '@vue/reactivity';
 
 
-// 格式化时间
-const nowDate = new Date()
-const future = new Date()
-future.setDate(nowDate.getDate() +1)
-
-const startDate = ref(format_mount_day(nowDate))
-const endDate = ref(format_mount_day(future))
-
-// 将需要传递的起止日期 实例化 出来----在onConfirm 中将数据传递
+// 导入在mainstore中初始化好的时间(搜索时间)
 const searchParamsStore = useSearchParamsStore()
+const {startDate,endDate} = storeToRefs(searchParamsStore)
 
-// 默认是选择一天(没有选择时间时)
-searchParamsStore.startDate = nowDate
-searchParamsStore.endDate = future
+
+// 因为这里时依赖前面的属性，所以这里使用计算属性
+const startDateStr = computed(() => format_mount_day(startDate.value))
+const endDateStr = computed(() => format_mount_day(endDate.value))
+
+// 这里在修改过后可以省略了（因为这里时设置默认值的）
+// 将需要传递的起止日期 实例化 出来----在onConfirm 中将数据传递
+// const searchParamsStore = useSearchParamsStore()
+
+// // 默认是选择一天(没有选择时间时)
+// searchParamsStore.startDate = nowDate
+// searchParamsStore.endDate = future
 
 
 // 计算总天数
-const countDate = ref(getDiffDays(nowDate,future))
+const countDate = ref(getDiffDays(startDate.value,endDate.value))
 
 // 这里是判断是否显示的，默认不显示日历，这里取值的时候要.value
 const showCalendar = ref(false);
@@ -34,8 +38,12 @@ const onConfirm = (values) => {
     const selectStartDate = start
     const selectEndDate = end
 
-    startDate.value = format_mount_day(selectStartDate)
-    endDate.value = format_mount_day(selectEndDate)
+    searchParamsStore.startDate = selectStartDate
+    searchParamsStore.endDate = selectEndDate
+
+    // 修改之后
+    // startDate.value = format_mount_day(selectStartDate)
+    // endDate.value = format_mount_day(selectEndDate)
 
     // 这里也需要绑定,计算总天数
     countDate.value = getDiffDays(selectStartDate,selectEndDate)
@@ -43,8 +51,8 @@ const onConfirm = (values) => {
     // 1. 这里将选择好的日期传递给citystore 进行搜索的时候需要这个数据
     // 2. 这里的数据可以通过 子传父 的方式让父组件获取数据
     // 3. 当 button 按钮也要抽取组件的时候，第一种方式更加友好，第二种方式的话，就要进行 全局的通信 了
-    searchParamsStore.startDate = selectStartDate
-    searchParamsStore.endDate = selectEndDate
+    // searchParamsStore.startDate = selectStartDate
+    // searchParamsStore.endDate = selectEndDate
 
 
     // 这里需要.value
@@ -74,9 +82,9 @@ const peopleCount = ref(0);
 
         <!-- 点击时，自动修改成true -->
         <div class="time" @click="showCalendar = true">
-            <span class="start">{{ startDate }}</span>
+            <span class="start">{{ startDateStr }}</span>
             <span>-</span>
-            <span class="end">{{ endDate }}</span>
+            <span class="end">{{ endDateStr }}</span>
             <span class="total">共{{countDate}}天</span>
         </div>
         <span>|</span>

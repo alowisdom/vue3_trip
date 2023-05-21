@@ -6,6 +6,13 @@ import { storeToRefs } from 'pinia';
 const houseListStore = useHouseListStore()
 const { houselist } = storeToRefs(houseListStore)
 
+defineProps({
+    houselist:{
+        type:Array,
+        default:() => {[]}
+    }
+})
+
 </script>
 
 <template>

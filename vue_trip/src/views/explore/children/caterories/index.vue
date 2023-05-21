@@ -7,6 +7,13 @@ import { getAssetURL } from '@/utils/load_assets';
 const categoriesStore = useCategoriesStore()
 const { categories } = storeToRefs(categoriesStore)
 
+defineProps({
+    categories:{
+        type:Array,
+        default:() => {[]}
+    }
+})
+
 
 // 这里和图片的顺序要对上
 // function hhhh(index) {
@@ -23,7 +30,7 @@ const { categories } = storeToRefs(categoriesStore)
 
             <img :src="getAssetURL(image[index].path)" alt="" class="img">
  
-            <span class="title" @click="hhhh(index)">{{ item.title }}</span>
+            <span class="title">{{ item.title }}</span>
         </div>
 
     </div>

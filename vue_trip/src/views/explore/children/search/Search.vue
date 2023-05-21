@@ -5,10 +5,10 @@ import { storeToRefs } from 'pinia';
 import selectCity from './childernComponent/selectCity.vue';
 import selectDate from './childernComponent/selectDate.vue'
 import { useHotSuggestsStore } from '@/store/modules/explore';
-import {useSearchParamsStore} from '@/store/modules/explore'
+import {useSearchParamsStore} from '@/store/modules/main'
 import { toRefs } from 'vue';
 import { useRouter } from 'vue-router';
-import { format_mount_day } from '@/utils/format_date';
+
 
 
 const cityStore = useCityStore()
@@ -21,7 +21,7 @@ const {currentCity} = storeToRefs(cityStore)
 defineProps({
     hotsuggests:{
         type:Array,
-        default:() => []
+        default:() => {}
     }
 })
 
@@ -67,16 +67,16 @@ const navigaToSearch = () => {
 
         <selectDate></selectDate>
 
-        <div class="tips">
+        <!-- <div class="tips">
             <span>可以做饭</span>
             <span>整套房源</span>
             <span>自助入住</span>
-        </div>
+        </div> -->
 
         <!-- 暂时不要这个--tips -->
-        <!-- <div class="tips">
+        <div class="tips">
             <span v-for="(item,index) in hotsuggests" :key="index">{{ item.tagText.text }}</span>
-        </div> -->
+        </div>
 
         <div class="searchBtn">
             <button class="btn" @click="navigaToSearch">
