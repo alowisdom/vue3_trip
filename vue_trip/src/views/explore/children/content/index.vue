@@ -1,30 +1,40 @@
 <script setup>
 import { useHouseListStore } from '@/store/modules/explore';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
-
+// 获取房子列表
 const houseListStore = useHouseListStore()
 const { houselist } = storeToRefs(houseListStore)
+const router = useRouter()
 
 defineProps({
-    houselist:{
-        type:Array,
-        default:() => {[]}
+    houselist: {
+        type: Array,
+        default: () => { [] }
     }
 })
+
+
+// 路由跳转
+const navigateToDatail = (id) => {
+    router.push('/detail/' + id)
+}
 
 </script>
 
 <template>
     <div class="content">
 
+        <!-- 大的盒子 -->
         <div class="big_content" v-for="item in houselist" :key="item.data.houseId">
 
-            <img :src="item.data.image.url" alt="" class="big_img">
+            <!-- 这里监听点击的是图片的范围 -->
+            <img :src="item.data.image.url" alt="" class="big_img" @click="navigateToDatail(item.data.houseId)">
 
-            <div class="big_box">
+        <div class="big_box">
 
-                <span class="label">{{ item.data.location }}</span>
+            <span class="label">{{ item.data.location }}</span>
 
             <div class="introduce">
                 <span>{{ item.data.summaryText }}</span>
@@ -32,26 +42,28 @@ defineProps({
             </div>
         </div>
 
+        <!-- 小的盒子 -->
+
     </div>
 
 
-    <!-- 这里的效果后面做，后端数据返回的格式要修改 -->
-    <!-- <div class="small_content" v-if="item.discoveryContentType === 9">
-            <div class="houseItem">
-                <img :src="item.data.image.url" alt="" class="small_img">
+        <!-- 这里的效果后面做，后端数据返回的格式要修改 -->
+        <!-- <div class="small_content" v-if="item.discoveryContentType === 9">
+                <div class="houseItem">
+                    <img :src="item.data.image.url" alt="" class="small_img">
 
-                <div class="small_box">
+                    <div class="small_box">
 
-                        <span class="small_label">近沙塘</span>
+                            <span class="small_label">近沙塘</span>
 
-                        <div class="small_introduce">
-                            <span>泰国 拉维(Rawai).9室21床16人.★4.5</span>
-                            <span>￥5031</span>
+                            <div class="small_introduce">
+                                <span>泰国 拉维(Rawai).9室21床16人.★4.5</span>
+                                <span>￥5031</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div> -->
+                </div> -->
     </div>
 </template>
 
@@ -85,9 +97,10 @@ defineProps({
             .label {
                 padding: 4px 8px;
                 margin-left: 10px;
-                background-color: #fff;
+                background-color: var(--fivth-color);
                 border-radius: var(--secondary-radius);
                 font-size: 12px;
+                color: #fff;
             }
 
             .introduce {
