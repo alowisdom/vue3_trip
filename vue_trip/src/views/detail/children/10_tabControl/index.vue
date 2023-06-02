@@ -1,22 +1,26 @@
-<script setup>
-import { ref } from 'vue';
-
-
-defineProps({
-    titles: {
-        type: Array,
-        default: () => []
+<script>
+export default {
+    props: {
+        titles: {
+            type: Array,
+            default: () => []
+        }
+    },
+    data() {
+        return {
+            currentIndex: 0
+        }
+    },
+    emits: ["tabItemClick"],
+    methods: {
+        itemClick(index) {
+            this.currentIndex = index
+            this.$emit("tabItemClick", index)
+        }
     }
-})
-
-const currentIndex = ref(0)
-
-function itemClick(index) {
-    this.currentIndex = index
 }
-
-
 </script>
+
 
 <template>
     <div class="tab-control">

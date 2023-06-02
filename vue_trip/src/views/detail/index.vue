@@ -31,29 +31,43 @@ const { detailInfos } = toRefs(detailStore)
 const mainPart = computed(() => detailInfos.value.mainPart)
 
 
+
+
 // 也要获取组件元素的ref
 const tabControlRef = ref()
 // 获取滚动的位置       这里时组件内部的滚动，不是window 的滚动
 const { scrollTop } = useScroll(tabControlRef)
-
 // tab_control 逻辑
 const isShowTabControl = computed(() => {
-    return scrollTop.value > 300
+    return scrollTop.value > 200
 })
 
-// 根据函数获取每一个组件的ref,并把它放到数组中
-const sectionEls = []
-const getSectionRef = (value) => {
-    sectionEls.push(value.$el)
-    console.log(value.$el);
-}
-console.log(sectionEls)
 
+
+// 动态设置name 属性
+// 根据函数获取每一个组件的ref,并把它放到数组中
+const sectionEls = ref({})
+// 这里的name 应该动态显示
+const title = computed(() => {
+    return Object.keys(sectionEls.value)
+})
+const getSectionRef = (value) => {
+    // sectionEls.push(value.$el)
+    // 获取每个组件的name 中的值
+    const name = value.$el.getAttribute("name")
+    sectionEls.value[name] = value.$el
+}
+
+
+
+// 跳转问题
 const tabControlClick = (index) => {
-    console.log("first")
     // 第一个组件我们默认不显示
-    let instance = sectionEls[index].offsetTop
-    console.log(instance);
+    const key = Object.keys(sectionEls.value)[index]
+    console.log(key)
+    const el = sectionEls.value[key]
+    // 拿到距离顶部的距离
+    let instance = el.offsetTop
     if (index !== 0) {
         instance = instance - 44
     }
@@ -81,26 +95,28 @@ const tabControlClick = (index) => {
 
         <turnback></turnback>
 
-        <tabControl :titles="['描述', '设施', '房东', '评论', '须知', '地图']" class="tabControl" v-if="isShowTabControl"
-            @click="tabControlClick">
+        <!-- 这里子传父的index 没有传过去，导致获取不到index -->
+        <!-- 花费一个半小时 -->
+        <tabControl :titles="title" class="tabControl" v-if="isShowTabControl" @tabItemClick="tabControlClick">
         </tabControl>
 
-        <div v-if="mainPart">
+        <div v-if="mainPart" v-memo="[mainPart]">
             <banner :swipe_data="mainPart.topModule.housePicture.housePics"></banner>
         </div>
 
         <!-- :ref="getSectionRef" 用来获取组件的ref -->
-        <infos :topInfos="mainPart?.topModule" :ref="getSectionRef"></infos>
+        <infos name="描述" :topInfos="mainPart?.topModule" :ref="getSectionRef"></infos>
 
-        <facility :houseFacility="mainPart?.dynamicModule.facilityModule.houseFacility" :ref="getSectionRef"></facility>
+        <facility name="设施" :houseFacility="mainPart?.dynamicModule.facilityModule.houseFacility" :ref="getSectionRef">
+        </facility>
 
-        <landlord :landlord="mainPart?.dynamicModule.landlordModule" :ref="getSectionRef"></landlord>
+        <landlord name="房东" :landlord="mainPart?.dynamicModule.landlordModule" :ref="getSectionRef"></landlord>
 
-        <comment :comment="mainPart?.dynamicModule.commentModule" :ref="getSectionRef"></comment>
+        <comment name="评论" :comment="mainPart?.dynamicModule.commentModule" :ref="getSectionRef"></comment>
 
-        <notice :orderRules="mainPart?.dynamicModule.rulesModule.orderRules" :ref="getSectionRef"></notice>
+        <notice name="须知" :orderRules="mainPart?.dynamicModule.rulesModule.orderRules" :ref="getSectionRef"></notice>
 
-        <!-- <detailmap :position="mainPart?.dynamicModule.positionModule" :ref="getSectionRef" /> -->
+        <!-- <detailmap name="地图" :position="mainPart?.dynamicModule.positionModule" :ref="getSectionRef" /> -->
 
         <intro :priceIntro="mainPart?.introductionModule" />
 
