@@ -54,13 +54,15 @@ const title = computed(() => {
 const getSectionRef = (value) => {
     // sectionEls.push(value.$el)
     // 获取每个组件的name 中的值
+    // 当点击的不是tabContorl 的组件时，没有$el 要取反
+    if(!value) return
     const name = value.$el.getAttribute("name")
     sectionEls.value[name] = value.$el
 }
 
 
 
-// 跳转问题
+// tabcontrol跳转问题
 const tabControlClick = (index) => {
     // 第一个组件我们默认不显示
     const key = Object.keys(sectionEls.value)[index]
@@ -79,9 +81,9 @@ const tabControlClick = (index) => {
     })
 
 }
+
 // scrollTo 滚动到
 // offsetTop 获取到顶部的距离
-
 // $el 获取每一个组件的跟组件
 // 动态绑定ref 的函数，获取每一个组件各自的ref
 
