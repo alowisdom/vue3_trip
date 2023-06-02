@@ -4,13 +4,14 @@ import { getDetailData } from "@/service/modules/detail";
 const useDetailStore = defineStore('detail',{
     state:() => {
         return {
-            detail:{}
+            detailInfos:{}
         }
     },
     actions:{
         async fetchDetailAction(params){
             const res = await getDetailData(params)
-            this.detail = res.data
+            this.detailInfos = res.data
+            
         }
     }
 })

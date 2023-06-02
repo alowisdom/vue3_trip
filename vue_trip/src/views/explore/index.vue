@@ -133,7 +133,7 @@ const isShowSearchBar = computed(() => {
 
     .top {
         position: relative;
-        height: 350px;
+        height: 380px;
 
         .explore_search {
             position: absolute;
