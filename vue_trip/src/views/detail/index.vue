@@ -16,6 +16,7 @@ import notice from './children/07_notice/index.vue'
 import detailmap from './children/08_map/index.vue'
 import intro from './children/09_intro/index.vue'
 import tabControl from './children/10_tabControl/index.vue'
+import { watch } from 'vue';
 
 
 
@@ -34,9 +35,9 @@ const mainPart = computed(() => detailInfos.value.mainPart)
 
 
 // 也要获取组件元素的ref
-const tabControlRef = ref()
+const tabRef = ref()
 // 获取滚动的位置       这里时组件内部的滚动，不是window 的滚动
-const { scrollTop } = useScroll(tabControlRef)
+const { scrollTop } = useScroll(tabRef)
 // tab_control 逻辑
 const isShowTabControl = computed(() => {
     return scrollTop.value > 200
@@ -55,7 +56,7 @@ const getSectionRef = (value) => {
     // sectionEls.push(value.$el)
     // 获取每个组件的name 中的值
     // 当点击的不是tabContorl 的组件时，没有$el 要取反
-    if(!value) return
+    if (!value) return
     const name = value.$el.getAttribute("name")
     sectionEls.value[name] = value.$el
 }
@@ -66,7 +67,6 @@ const getSectionRef = (value) => {
 const tabControlClick = (index) => {
     // 第一个组件我们默认不显示
     const key = Object.keys(sectionEls.value)[index]
-    console.log(key)
     const el = sectionEls.value[key]
     // 拿到距离顶部的距离
     let instance = el.offsetTop
@@ -75,7 +75,7 @@ const tabControlClick = (index) => {
     }
 
     // 滚动到的位置
-    tabControlRef.value.scrollTo({
+    tabRef.value.scrollTo({
         top: instance,
         behavior: "smooth"
     })
@@ -89,17 +89,44 @@ const tabControlClick = (index) => {
 
 
 
+
+// 页面滚动匹配
+// 步骤：1、监听页面的滚动
+// 获取ref
+const tabControlRef = ref()
+watch(scrollTop, (newValue) => {
+    // 拿到每一个tab标签对应的scrollTop 的值
+    const els = Object.values(sectionEls.value)
+    // 拿到offsetTop 距离顶部的值
+    const values = els.map(el => el.offsetTop)
+
+    // 根据newValue 匹配这个高度对应的索引
+    // 限制最后一个组件的下标
+    let index = values.length - 1
+    for (let i = 1; i < values.length; i++) {
+        if (values[i] > newValue + 44) {
+            index = i -1
+            break
+        }
+    }
+    // tcRef.value?.data = index
+    tabControlRef.value?.setCurrentIndex(index)
+})
+
+
+
 </script>
 
 <template>
     <!-- ref 绑定的是这里的最大的页面，因为是在页面内进行滚动的 -->
-    <div class="top-page" ref="tabControlRef">
+    <div class="top-page" ref="tabRef">
 
         <turnback></turnback>
 
         <!-- 这里子传父的index 没有传过去，导致获取不到index -->
         <!-- 花费一个半小时 -->
-        <tabControl :titles="title" class="tabControl" v-if="isShowTabControl" @tabItemClick="tabControlClick">
+        <tabControl :titles="title" class="tabControl" v-if="isShowTabControl" 
+        @tabItemClick="tabControlClick" ref="tabControlRef">
         </tabControl>
 
         <div v-if="mainPart" v-memo="[mainPart]">
@@ -118,7 +145,7 @@ const tabControlClick = (index) => {
 
         <notice name="须知" :orderRules="mainPart?.dynamicModule.rulesModule.orderRules" :ref="getSectionRef"></notice>
 
-        <!-- <detailmap name="地图" :position="mainPart?.dynamicModule.positionModule" :ref="getSectionRef" /> -->
+        <detailmap name="地图" :position="mainPart?.dynamicModule.positionModule" :ref="getSectionRef" />
 
         <intro :priceIntro="mainPart?.introductionModule" />
 

@@ -10,6 +10,8 @@ import Searchbar from '@/components/searchbar/searchbar.vue';
 import useScroll from '@/hooks/useScroll'
 import { watch } from 'vue';
 import { computed } from '@vue/reactivity';
+import { ref } from 'vue';
+import { onActivated } from 'vue';
 
 
 
@@ -51,7 +53,8 @@ houseListStore.fetchHouseListAction()
 
 // 解构出isReachBottom
 // scrollTop 需要做节流操作
-const { isReachBottom, scrollTop } = useScroll()
+const homeRef = ref()
+const { isReachBottom, scrollTop } = useScroll(homeRef)
 
 // 使用watch监听 值 得变化--不用computed是因为这里有逻辑需要执行
 watch(isReachBottom, (newValue) => {
@@ -85,11 +88,30 @@ const isShowSearchBar = computed(() => {
 })
 
 
+// // 回来时保留原来位置
+// onActivated(() => {
+//     homeRef.value?.scrollTo({
+//         top: scrollTop.value
+//     })
+// })
+
+// // 跳转回home时, 保留原来的位置
+onActivated(() => {
+    homeRef.value?.scrollTo({
+        top: scrollTop.value
+    })
+})
+
 
 </script>
 
+<script>
+// 这里处理keep alive 要设置name属性
+export default { name: 'explore' }
+</script>
+
 <template>
-    <div class="explore">
+    <div class="explore" ref="homeRef">
 
         <div class="explore_searchbar" v-if="isShowSearchBar">
             <Searchbar></Searchbar>
@@ -115,8 +137,10 @@ const isShowSearchBar = computed(() => {
 <style scoped lang='less'>
 .explore {
 
-
-    margin-bottom: 100px;
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding-bottom: 100px;
 
     .explore_searchbar {
 

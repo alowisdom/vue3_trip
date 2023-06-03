@@ -30,7 +30,10 @@ const navigateToDatail = (id) => {
         <div class="big_content" v-for="item in houselist" :key="item.data.houseId">
 
             <!-- 这里监听点击的是图片的范围 -->
-            <img :src="item.data.image.url" alt="" class="big_img" @click="navigateToDatail(item.data.houseId)">
+            <img :src="item.data.image.url" alt="" class="big_img" 
+            @click="navigateToDatail(item.data.houseId)"
+            
+            >
 
         <div class="big_box">
 
